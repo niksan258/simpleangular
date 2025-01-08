@@ -1,0 +1,20 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-group-container">
+    <label for="email">Email:</label>
+    <input id="email" type="email" formControlName="email">
+    
+    <div class="form-error" *ngIf="isSubmitted && loginForm.get('email')?.errors?.['email']">
+      Please enter a valid email address.
+    </div>
+  
+    <label for="password">Password:</label>
+    <input id="password" type="password" formControlName="password">
+    
+    <div class="form-error" *ngIf="isSubmitted && loginForm.get('password')?.errors?.['minlength']">
+      Password must be at least 8 characters long.
+    </div>
+  
+    <button type="submit">Login</button>
+    </div>
+  </form>
+  
