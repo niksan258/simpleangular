@@ -1,20 +1,23 @@
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="example-form">
     <div class="form-group-container">
-    <label for="email">Email:</label>
-    <input id="email" type="email" formControlName="email">
-    
-    <div class="form-error" *ngIf="isSubmitted && loginForm.get('email')?.errors?.['email']">
-      Please enter a valid email address.
+
+        <mat-form-field class="example-full-width">
+            <mat-label>Email</mat-label>
+            <input type="email" matInput formControlName="email" placeholder="gosho@example.com">
+            <mat-error *ngIf="loginForm.get('email')?.errors?.['email']">
+                Please enter a valid email address.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <mat-label>Password</mat-label>
+            <input type="password" matInput formControlName="password" placeholder="Secret..">
+            <mat-error *ngIf="loginForm.get('password')?.errors?.['minlength']">
+                Password must be at least 8 characters long.
+            </mat-error>
+        </mat-form-field>
+
+
+        <button type="submit" mat-stroked-button>Login</button>
     </div>
-  
-    <label for="password">Password:</label>
-    <input id="password" type="password" formControlName="password">
-    
-    <div class="form-error" *ngIf="isSubmitted && loginForm.get('password')?.errors?.['minlength']">
-      Password must be at least 8 characters long.
-    </div>
-  
-    <button type="submit">Login</button>
-    </div>
-  </form>
-  
+</form>
