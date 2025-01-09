@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../auth.service';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,10 +12,7 @@ import { HttpClient } from '@angular/common/http';
 
 export class LoginComponent {
 
-  private authService : AuthService;
-  isSubmitted = false;
-
-  constructor(authService : AuthService) {
+  constructor(private authService : AuthService, private router: Router) {
     this.authService = authService;
   }
 
@@ -25,8 +23,6 @@ export class LoginComponent {
 
 
   onSubmit = () : void => {
-    this.isSubmitted = true;
-
     if(this.loginForm.invalid)
       return;
 
@@ -36,8 +32,10 @@ export class LoginComponent {
 
     this.authService.login(this.loginForm.value.email, this.loginForm.value.password)
     .subscribe({
-      next: (response) => alert(JSON.stringify(response)),
-      error: (error) => alert(JSON.stringify(error.message))
+      next: (response) => {
+        this.router.navigate(['fetch-data'])
+      },
+      error: (response) => alert(response.error)
     });
   }
 }

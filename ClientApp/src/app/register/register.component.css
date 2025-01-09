@@ -1,4 +1,4 @@
-.login-form{
+.register-form{
     margin-left: auto;
     margin-right: auto;
     width: 325px;
@@ -13,7 +13,7 @@
     .full-width {
         width: 100%;
     }
-    .login-btn{
+    .register-btn{
         display: block;
         margin-bottom: 10px;
     }

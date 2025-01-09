@@ -9,6 +9,7 @@ using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel.DataAnnotations;
 
 namespace simpleapp.Controllers;
 
@@ -41,13 +42,13 @@ public class AuthController : ControllerBase
     {
         if (userDto == null || string.IsNullOrWhiteSpace(userDto.Email) || string.IsNullOrWhiteSpace(userDto.Password))
         {
-            return BadRequest("Invalid user data.");
+            return BadRequest(new { Message = "Invalid user data." });
         }
 
         var existingUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == userDto.Email);
         if (existingUser != null)
         {
-            return Conflict("Email is already taken.");
+            return Conflict(new { Message = "Email is already taken." });
         }
 
         var user = new User()
@@ -60,29 +61,25 @@ public class AuthController : ControllerBase
         dbContext.Users.Add(user);
         await dbContext.SaveChangesAsync();
 
-        return Ok("User registered successfully.");
+        return Ok(new { Message = "User registered successfully." });
     }
 
     [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UserDTO userDto)
     {
-        if (userDto == null || string.IsNullOrWhiteSpace(userDto.Email) || string.IsNullOrWhiteSpace(userDto.Password))
+        if (!IsUserValid(userDto))
         {
-            return BadRequest("Invalid login data.");
+            return BadRequest(new { Message = "Invalid login data." });
         }
 
         var user = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == userDto.Email);
-        if (user == null)
+        if (user == null || passwordHasher.VerifyHashedPassword(user, user.PasswordHash, userDto.Password) 
+                            != PasswordVerificationResult.Success)
         {
-            return Unauthorized("Invalid email or password.");
+            return Unauthorized(new { Message = "Invalid email or password." });
         }
 
-        var passwordVerificationResult = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, userDto.Password);
-        if (passwordVerificationResult != PasswordVerificationResult.Success)
-        {
-            return Unauthorized("Invalid email or password.");
-        }
 
         var token = generateJWT(user);
 
@@ -100,8 +97,20 @@ public class AuthController : ControllerBase
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString())
         };
 
-        var token = new JwtSecurityToken(configuration["Jwt:Issuer"], configuration["Jwt:Audience"], claims, null, DateTime.Now.AddHours(1), credentials);
+        var token = new JwtSecurityToken(configuration["Jwt:Issuer"], 
+                                         configuration["Jwt:Audience"], 
+                                         claims, 
+                                         null, 
+                                         DateTime.Now.AddHours(1), 
+                                         credentials);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    private static bool IsUserValid(UserDTO user)
+    {
+        return user is not null 
+            && user.Email is not null && new EmailAddressAttribute().IsValid(user.Email)
+            && user.Password is not null && user.Password.Length >= 8;
     }
 }

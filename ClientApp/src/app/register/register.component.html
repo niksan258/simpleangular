@@ -1,9 +1,9 @@
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-    <h2>Login</h2>
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+    <h2>Register</h2>
         <mat-form-field class="full-width">
             <mat-label>Email</mat-label>
             <input type="email" matInput formControlName="email" placeholder="gosho@example.com">
-            <mat-error *ngIf="loginForm.get('email')?.errors?.['email']">
+            <mat-error *ngIf="registerForm.get('email')?.errors?.['email']">
                 Please enter a valid email address.
             </mat-error>
         </mat-form-field>
@@ -11,10 +11,10 @@
         <mat-form-field class="full-width">
             <mat-label>Password</mat-label>
             <input type="password" matInput formControlName="password" placeholder="Secret..">
-            <mat-error *ngIf="loginForm.get('password')?.errors?.['minlength']">
+            <mat-error *ngIf="registerForm.get('password')?.errors?.['minlength']">
                 Password must be at least 8 characters.
             </mat-error>
         </mat-form-field>
-        <button class="login-btn" type="submit" mat-stroked-button>Log In</button>
-        <i class="register-text">Don't have an account yet? <a routerLink="/register">Register</a></i>
+        <button class="register-btn" type="submit" mat-stroked-button>Register</button>
+        <i class="register-text">Already have an account? <a routerLink="/login">Login</a></i>
 </form>
