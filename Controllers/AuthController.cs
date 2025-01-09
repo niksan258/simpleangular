@@ -4,6 +4,11 @@ using Microsoft.AspNetCore.Identity;
 using simpleapp.Data.DTOs;
 using simpleapp.Data.DbContexts;
 using simpleapp.Data.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace simpleapp.Controllers;
 
@@ -13,14 +18,24 @@ public class AuthController : ControllerBase
 {
     private readonly AppDbContext dbContext;
     private readonly IPasswordHasher<User> passwordHasher;
+    private readonly IConfiguration configuration;
 
 
-    public AuthController(AppDbContext dbContext, IPasswordHasher<User> passwordHasher)
+    public AuthController(AppDbContext dbContext, IPasswordHasher<User> passwordHasher, IConfiguration configuration)
     {
         this.dbContext = dbContext;
         this.passwordHasher = passwordHasher;
+        this.configuration = configuration;
     }
 
+    [Authorize]
+    [HttpGet("authtest")]
+    public IActionResult AuthTest()
+    {
+        return Ok("Authenticated successfully!");
+    }
+
+    [AllowAnonymous]
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserDTO userDto)
     {
@@ -48,6 +63,7 @@ public class AuthController : ControllerBase
         return Ok("User registered successfully.");
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UserDTO userDto)
     {
@@ -68,8 +84,24 @@ public class AuthController : ControllerBase
             return Unauthorized("Invalid email or password.");
         }
 
-        var token = "test";
+        var token = generateJWT(user);
 
         return Ok(new { Message = "Login successful.", Token = token });
+    }
+
+    private string generateJWT(User user)
+    {
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
+        var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+        var claims = new[]
+        { 
+            new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString())
+        };
+
+        var token = new JwtSecurityToken(configuration["Jwt:Issuer"], configuration["Jwt:Audience"], claims, null, DateTime.Now.AddHours(1), credentials);
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }
