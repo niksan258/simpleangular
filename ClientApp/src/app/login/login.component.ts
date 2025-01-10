@@ -35,7 +35,7 @@ export class LoginComponent {
       next: (response) => {
         this.router.navigate(['fetch-data'])
       },
-      error: (response) => alert(response.error)
+      error: (response) => alert(response.error.message)
     });
   }
 }
