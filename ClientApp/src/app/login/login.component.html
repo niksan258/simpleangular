@@ -1,20 +1,31 @@
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
-    <h2>Login</h2>
-        <mat-form-field class="full-width">
+    <mat-card class="login-card">
+      <mat-card-header>
+        <mat-card-title>Login</mat-card-title>
+        <mat-card-subtitle>Please enter your login details</mat-card-subtitle>
+      </mat-card-header>
+  
+      <mat-card-content>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+          
+          <mat-form-field class="full-width">
             <mat-label>Email</mat-label>
             <input type="email" matInput formControlName="email" placeholder="gosho@example.com">
             <mat-error *ngIf="loginForm.get('email')?.errors?.['email']">
-                Please enter a valid email address.
+              Please enter a valid email address.
             </mat-error>
-        </mat-form-field>
-
-        <mat-form-field class="full-width">
+          </mat-form-field>
+  
+          <mat-form-field class="full-width">
             <mat-label>Password</mat-label>
             <input type="password" matInput formControlName="password" placeholder="Secret..">
             <mat-error *ngIf="loginForm.get('password')?.errors?.['minlength']">
-                Password must be at least 8 characters.
+              Password must be at least 8 characters.
             </mat-error>
-        </mat-form-field>
-        <button class="login-btn" type="submit" mat-stroked-button>Log In</button>
-        <i class="register-text">Don't have an account yet? <a routerLink="/register">Register</a></i>
-</form>
+          </mat-form-field>
+  
+          <button class="login-btn" type="submit" mat-stroked-button>Log In</button>
+          
+          <mat-card-subtitle>Don't have an account yet? <a routerLink="/register">Register</a></mat-card-subtitle>
+        </form>
+      </mat-card-content>
+    </mat-card>

@@ -15,6 +15,10 @@ import { MatButtonModule } from '@angular/material/button'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RegisterComponent } from './register/register.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { AccountDetailsComponent } from './account-details/account-details.component';
+import {MatCardModule} from '@angular/material/card';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 
 @NgModule({
   declarations: [
@@ -24,7 +28,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     CounterComponent,
     FetchDataComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    AccountDetailsComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -33,12 +38,16 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     BrowserAnimationsModule,
     MatInputModule,
     MatButtonModule,
+    MatCardModule,
+    MatProgressSpinnerModule,
+    
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
+      { path: 'account-details', component: AccountDetailsComponent}
 
     ])
   ],

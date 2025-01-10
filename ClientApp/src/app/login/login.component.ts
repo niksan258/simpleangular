@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
@@ -29,6 +28,7 @@ export class LoginComponent {
     // TODO: remove
     if(!this.loginForm.value.email || !this.loginForm.value.password)
       return;
+
 
     this.authService.login(this.loginForm.value.email, this.loginForm.value.password)
     .subscribe({

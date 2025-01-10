@@ -1,21 +1,14 @@
-.login-form{
+.login-card{
+    width: 325px;
     margin-left: auto;
     margin-right: auto;
-    width: 325px;
-    padding: 20px;
-    border: 2px solid black;
-    border-radius: 5%;
+}
 
-    .form-error {
-        color: red
-    }
-    
-    .full-width {
-        width: 100%;
-    }
-    .login-btn{
-        display: block;
-        margin-bottom: 10px;
-    }
+.full-width {
+    width: 100%;
+}
+.login-btn{
+    display: block;
+    margin-bottom: 10px;
 }
 

@@ -26,8 +26,8 @@ export class AuthService {
     );
   }
 
-  register(email: string, password: string) {
-    const user = { email, password };
+  register(email: string,fullName: string, password: string) {
+    const user = { email, fullName, password };
     return this.httpClient.post(`${this.baseUrl}auth/register`, user);
   }
 

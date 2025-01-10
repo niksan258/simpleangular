@@ -15,6 +15,7 @@ constructor(private authService : AuthService, private router: Router) {
 
   registerForm = new FormGroup({
     email: new FormControl('',[Validators.required, Validators.email]),
+    fullName: new FormControl('',[Validators.required, Validators.minLength(3)]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)])
   });
 
@@ -24,12 +25,12 @@ constructor(private authService : AuthService, private router: Router) {
       return;
 
     // TODO: remove
-    if(!this.registerForm.value.email || !this.registerForm.value.password)
+    if(!this.registerForm.value.email || !this.registerForm.value.fullName || !this.registerForm.value.password)
       return;
 
-    this.authService.register(this.registerForm.value.email, this.registerForm.value.password)
+    this.authService.register(this.registerForm.value.email,this.registerForm.value.fullName, this.registerForm.value.password)
     .subscribe({
-      next: (response) => {
+      next: () => {
         this.router.navigate(['login'])
       },
       error: (response) => alert(JSON.stringify(response.error))
