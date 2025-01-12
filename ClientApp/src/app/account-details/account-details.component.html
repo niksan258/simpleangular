@@ -29,6 +29,14 @@
               Name must be at least 3 characters long.
             </mat-error>
           </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-label>Password</mat-label>
+            <input type="password" matInput formControlName="password" placeholder="Secret..">
+            <mat-error *ngIf="userUpdateForm.get('password')?.hasError('minlength')">
+              Password must be at least 8 characters long.
+            </mat-error>
+          </mat-form-field>
   
           <button mat-stroked-button type="submit" [disabled]="userUpdateForm.invalid">Update details</button>
         </form>

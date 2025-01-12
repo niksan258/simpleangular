@@ -12,8 +12,8 @@ using simpleapp.Data.DbContexts;
 namespace simpleapp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250108104840_Initial")]
-    partial class Initial
+    [Migration("20250110121957_update-user")]
+    partial class updateuser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,7 @@ namespace simpleapp.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("simpleapp.Data.User", b =>
+            modelBuilder.Entity("simpleapp.Data.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -34,11 +34,18 @@ namespace simpleapp.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });

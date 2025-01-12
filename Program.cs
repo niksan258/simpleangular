@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using simpleapp.Auth.Interfaces;
+using simpleapp.Auth;
 using simpleapp.Data;
 using simpleapp.Data.DbContexts;
 using simpleapp.Data.Models;
@@ -29,7 +31,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+builder.Services.AddTransient<IPasswordHasher<User>, PasswordHasher<User>>();
+builder.Services.AddTransient<IUserValidator, UserValidator>();
+builder.Services.AddTransient<IJWTService, JWTService>();
 
 var app = builder.Build();
 

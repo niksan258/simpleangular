@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { UserDetailsResponse } from '../dtos/user-details-response';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UserDetailsUpdateRequest } from '../dtos/user-details-update-request';
+
 
 @Component({
   selector: 'app-account-details',
@@ -16,6 +18,8 @@ export class AccountDetailsComponent implements OnInit {
   userUpdateForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     fullName: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    password: new FormControl('', [Validators.minLength(8)]),
+
   });
 
   ngOnInit(): void {
@@ -39,13 +43,19 @@ export class AccountDetailsComponent implements OnInit {
     if (!this.userUpdateForm.value.email || !this.userUpdateForm.value.fullName)
       return;
 
-    // this.authService.register(this.userUpdateForm.value.email, this.userUpdateForm.value.fullName, this.registerForm.value.password)
-    //   .subscribe({
-    //     next: () => {
-    //       this.router.navigate(['login'])
-    //     },
-    //     error: (response) => alert(JSON.stringify(response.error))
-    //   });
+    const user : UserDetailsUpdateRequest = {
+      email: this.userUpdateForm.value.email,
+      fullName: this.userUpdateForm.value.fullName,
+      password: this.userUpdateForm.value.password?.length != 0 ? this.userUpdateForm.value.password : null
+    }
+
+    this.userService.updateCurrentUserDetails(user)
+      .subscribe({
+        next: () => {
+          alert("updated");
+        },
+        error: (response) => alert(JSON.stringify(response.error))
+      });
   }
 
 }
