@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { UserDetailsResponse } from '../dtos/user-details-response';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { UserDetailsUpdateRequest } from '../dtos/user-details-update-request';
 
 
@@ -16,9 +16,9 @@ export class AccountDetailsComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   userUpdateForm = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
-    fullName: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    password: new FormControl('', [Validators.minLength(8)]),
+    email: new UntypedFormControl('', [Validators.required, Validators.email]),
+    fullName: new UntypedFormControl('', [Validators.required, Validators.minLength(3)]),
+    password: new UntypedFormControl('', [Validators.minLength(8)]),
 
   });
 
@@ -39,12 +39,8 @@ export class AccountDetailsComponent implements OnInit {
     if (this.userUpdateForm.invalid)
       return;
 
-    // TODO: remove
-    if (!this.userUpdateForm.value.email || !this.userUpdateForm.value.fullName)
-      return;
-
     const user : UserDetailsUpdateRequest = {
-      email: this.userUpdateForm.value.email,
+      email: this.userUpdateForm.controls.email.value,
       fullName: this.userUpdateForm.value.fullName,
       password: this.userUpdateForm.value.password?.length != 0 ? this.userUpdateForm.value.password : null
     }

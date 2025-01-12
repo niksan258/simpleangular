@@ -16,4 +16,8 @@ export class UserService {
   updateCurrentUserDetails(user: UserDetailsUpdateRequest) {
     return this.httpClient.post(`${this.baseUrl}users/me`, user);
   }
+
+  getAllUsers() {
+    return this.httpClient.get<UserDetailsResponse[]>(`${this.baseUrl}users`);
+  }
 }

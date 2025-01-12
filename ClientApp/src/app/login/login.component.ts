@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
@@ -16,8 +16,8 @@ export class LoginComponent {
   }
 
   loginForm = new FormGroup({
-    email: new FormControl('',[Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(8)])
+    email: new UntypedFormControl('',[Validators.required, Validators.email]),
+    password: new UntypedFormControl('', [Validators.required, Validators.minLength(8)])
   });
 
 
@@ -25,14 +25,9 @@ export class LoginComponent {
     if(this.loginForm.invalid)
       return;
 
-    // TODO: remove
-    if(!this.loginForm.value.email || !this.loginForm.value.password)
-      return;
-
-
     this.authService.login(this.loginForm.value.email, this.loginForm.value.password)
     .subscribe({
-      next: (response) => {
+      next: () => {
         this.router.navigate(['fetch-data'])
       },
       error: (response) => alert(response.error.message)
