@@ -18,6 +18,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { AccountDetailsComponent } from './account-details/account-details.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { UserDetailsComponent } from './user-details/user-details.component';
+import { MatSelectModule} from '@angular/material/select'
 
 
 @NgModule({
@@ -30,6 +32,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     LoginComponent,
     RegisterComponent,
     AccountDetailsComponent,
+    UserDetailsComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -40,6 +43,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     MatButtonModule,
     MatCardModule,
     MatProgressSpinnerModule,
+    MatSelectModule,
     
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },

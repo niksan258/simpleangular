@@ -1,0 +1,19 @@
+
+<div class="user-select-container">
+<h3>Select a User</h3>
+
+<mat-form-field appearance="fill" style="width: 100%;">
+  <mat-label>Users</mat-label>
+  <mat-select [formControl]="userControl" placeholder="Select a user">
+    <mat-option *ngFor="let user of users" [value]="user.id">
+      {{ user.fullName }} ({{ user.email }})
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<div *ngIf="userControl.value">
+  <p><strong>Selected User ID via direct formcontrol value:</strong> {{ userControl.value }}</p>
+  <p><strong>Selected User ID via observable valuechange:</strong> {{ selectedUserId }}</p>
+
+</div>
+</div>
