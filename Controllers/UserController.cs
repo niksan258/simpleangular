@@ -78,7 +78,19 @@ namespace simpleapp.Controllers
             return Ok(new { Message = "Updated successfully."});
         }
 
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await dbContext.Users.Select(user => new UserDetailsResponse 
+            {
+                Id= user.Id.ToString(),
+                Email = user.Email,
+                FullName = user.FullName
+            }).ToListAsync();
 
+            return Ok(users);
+        }
 
         private string? GetUserIdFromToken()
         {
