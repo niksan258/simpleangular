@@ -54,4 +54,9 @@ export class AccountDetailsComponent implements OnInit {
       });
   }
 
+  ngOnDestroy()
+  {
+    
+  }
+
 }

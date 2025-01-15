@@ -20,6 +20,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { UserDetailsComponent } from './user-details/user-details.component';
 import { MatSelectModule} from '@angular/material/select'
+import routeConfig from './routes';
 
 
 @NgModule({
@@ -44,16 +45,7 @@ import { MatSelectModule} from '@angular/material/select'
     MatCardModule,
     MatProgressSpinnerModule,
     MatSelectModule,
-    
-    RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'login', component: LoginComponent },
-      { path: 'register', component: RegisterComponent },
-      { path: 'account-details', component: AccountDetailsComponent}
-
-    ])
+    RouterModule.forRoot(routeConfig)
   ],
   providers: [
     {

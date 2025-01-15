@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserDetailsResponse } from '../dtos/user-details-response';
 import { FormControl } from '@angular/forms';
 import { UserService } from '../services/user.service';
+import { distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-user-details',
@@ -26,7 +27,9 @@ export class UserDetailsComponent implements OnInit {
       }
     });
 
-    this.userControl.valueChanges.subscribe((selectedUserId) => {
+    this.userControl.valueChanges.pipe(
+      distinctUntilChanged(),
+    ).subscribe((selectedUserId) => {
       this.selectedUserId = selectedUserId;
     });
   }
