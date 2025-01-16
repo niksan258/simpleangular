@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -21,6 +21,12 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { UserDetailsComponent } from './user-details/user-details.component';
 import { MatSelectModule} from '@angular/material/select'
 import routeConfig from './routes';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { userReducer } from './state/users/user.reducer';
+import { UserEffects } from './state/users/user.effects';
+import { environment } from 'src/environments/environment';
 
 
 @NgModule({
@@ -45,7 +51,14 @@ import routeConfig from './routes';
     MatCardModule,
     MatProgressSpinnerModule,
     MatSelectModule,
-    RouterModule.forRoot(routeConfig)
+    RouterModule.forRoot(routeConfig),
+    StoreModule.forRoot({users : userReducer}),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
+    EffectsModule.forRoot([UserEffects]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
   ],
   providers: [
     {
